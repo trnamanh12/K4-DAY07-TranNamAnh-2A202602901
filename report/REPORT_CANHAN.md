@@ -1,7 +1,7 @@
 # Báo Cáo Cá Nhân — Lab 7: Embedding & Vector Store
 
 **Họ tên:** Trần Nam Anh
-**Nhóm:** [Tên nhóm]
+**Nhóm:** So1
 **Ngày:** 20/09/2026
 
 > **Nộp 1 bản / sinh viên.** Phần nhóm (lựa chọn tài liệu, thiết kế chiến lược, bộ câu hỏi đánh giá, demo) nộp chung 1 bản trong `REPORT_NHOM.md`. Chi tiết thang điểm: `docs/SCORING.md`.
@@ -138,14 +138,14 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 | Cặp | Câu A | Câu B | Dự đoán | Điểm thực tế | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | | | cao / thấp | | |
-| 2 | | | cao / thấp | | |
-| 3 | | | cao / thấp | | |
-| 4 | | | cao / thấp | | |
-| 5 | | | cao / thấp | | |
+| 1 | Chính sách trả hàng và hoàn tiền Shopee | Quy định đổi trả sản phẩm cho người mua | cao | -0.1835 | Sai |
+| 2 | Người bán phản hồi khiếu nại trong 48 giờ | Thời hạn người bán xử lý yêu cầu là 2 ngày | cao | +0.1147 | Đúng |
+| 3 | Hướng dẫn đóng gói hàng dễ vỡ bằng thùng carton | Thời gian xử lý bảo hành điện thoại từ 7 đến 14 ngày | thấp | +0.2360 | Sai |
+| 4 | Mức bồi thường tổn thất hàng hóa khi vận chuyển | Công thức làm bánh bông lan phô mai Nhật Bản | thấp | +0.0386 | Đúng |
+| 5 | Chính sách đổi trả hàng hóa Shopee Mall | Chính sách đổi trả hàng hóa Shopee Mall | cao | +1.0000 | Đúng |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn ý nghĩa?**
-> *Viết 2-3 câu:*
+> Kết quả bất ngờ nhất là Cặp 1 và Cặp 3: Ở Cặp 1, hai câu có ý nghĩa tương đương nhau về mặt con người nhưng `MockEmbedder` lại cho điểm âm (-0.1835); trong khi ở Cặp 3, hai câu về hai chủ đề khác biệt (đóng gói vs bảo hành) lại nhận điểm dương khá cao (+0.2360). Điều này chỉ ra rằng `MockEmbedder` chỉ băm ký tự/token cục bộ (lexical hashing) chứ hoàn toàn không học được không gian ngữ nghĩa thực thụ (semantic representation). Trong hệ thống RAG thực tế, bắt buộc phải dùng các mô hình ngôn ngữ như SentenceTransformers để hai câu cùng nghĩa được kéo gần nhau trong không gian vector.
 
 ---
 
@@ -155,16 +155,16 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
 |---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Thời hạn tối đa để người mua gửi yêu cầu trả hàng và hoàn tiền đối với sản phẩm Shopee Mall là bao lâu? | `shopee-shipping-damage-compensation#9`: Video quay liên tục từ lúc kiểm tra tem niêm phong kiện hàng... | +0.3133 | Không (Tài liệu bồi thường vận chuyển chen lên) | Agent trích dẫn tài liệu bồi thường vận chuyển và hướng dẫn quay video mở hàng, không chứa mốc 15 ngày Shopee Mall. |
+| 2 | Người bán có bao nhiêu thời gian để phản hồi khi người mua yêu cầu trả hàng hoàn tiền? *(Filter `audience: seller`)* | `shopee-seller-dispute-resolution#5`: Quy định nếu hàng hoàn về bị hư hại, tráo đổi linh kiện... | +0.2517 | Có (Top-1, cùng tài liệu quy định Người Bán) | Agent trả lời dựa trên tài liệu giải quyết tranh chấp người bán, nêu rõ quy trình và chế tài xử lý khiếu nại. |
+| 3 | Thời gian xử lý bảo hành tiêu chuẩn đối với sản phẩm chính hãng tại Shopee là bao nhiêu ngày? | `shopee-buyer-warranty-policy#3`: Sản phẩm gặp sự cố hư hỏng hoặc lỗi kỹ thuật do nhà sản xuất... | +0.2687 | Có (Top-1, tài liệu bảo hành chính hãng) | Agent nêu các điều kiện bảo hành và thời gian kiểm tra xử lý lỗi sản phẩm từ tài liệu bảo hành. |
+| 4 | Người bán Shopee phải sử dụng thùng carton mấy lớp đối với hàng hóa nặng trên 5 kg hoặc hàng dễ vỡ? *(Filter `audience: seller`)* | `shopee-seller-packaging-guidelines#6`: Thời hạn chuẩn bị hàng và bàn giao cho bưu cục Shopee... | +0.2113 | Có (Top-1, tài liệu hướng dẫn đóng gói) | Agent trích dẫn hướng dẫn chuẩn bị hàng và quy cách đóng gói dành cho Người Bán Shopee. |
+| 5 | Mức bồi thường tổn thất tối đa đối với đơn hàng vận chuyển Shopee không mua bảo hiểm hàng hóa là bao nhiêu? | `shopee-prohibited-items-policy#2`: Danh mục chất kích thích, thuốc lá, hàng hóa cấm vận chuyển... | +0.3053 | Không (Bị tài liệu hàng cấm chiếm Top-1 do trùng từ khóa) | Agent trích dẫn cảnh báo danh mục hàng cấm thay vì điều khoản mức tiền đền bù vận chuyển. |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 3 / 5
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> Qua so sánh với chiến lược `HeadingChunker` của bạn Minh, tôi nhận thấy với các tài liệu quy định pháp lý/chính sách TMĐT, việc chia nhỏ theo cấu trúc tiêu đề (Header/Section) giữ trọn vẹn ngữ cảnh của từng điều khoản tốt hơn nhiều so với `RecursiveChunker` (vốn có thể cắt rời tiêu đề với danh sách nội dung bên dưới). Ngoài ra, bộ lọc siêu dữ liệu (`metadata_filter`) là công cụ cực kỳ lợi hại để triệt tiêu tài liệu gây nhiễu trong nền tảng có nhiều đối tượng tương tác như sàn TMĐT.
 
 ---
 
@@ -172,9 +172,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5 / 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 10 / 10 |
+| **Tổng phần cá nhân** | **60 / 60** |

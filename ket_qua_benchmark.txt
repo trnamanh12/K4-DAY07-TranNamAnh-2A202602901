@@ -1,0 +1,134 @@
+================================================================================
+BÁO CÁO KẾT QUẢ BENCHMARK RETRIEVAL — CHECKPOINT 6
+Chiến lược sử dụng: RecursiveChunker
+Sinh viên: Trần Nam Anh (2A202602901) | Nhóm So1
+Backend Embedding: MockEmbedder (_mock_embed)
+================================================================================
+Tổng số tài liệu: 6
+Tổng số chunks sau khi chia nhỏ: 58
+
+PHẦN 1: ĐÁNH GIÁ CHẤT LƯỢNG TRUY XUẤT 2 MỨC (METRIC SCORE / 10 ĐIỂM)
+Quy tắc chấm điểm:
+  - 2 điểm: Tài liệu gold nằm ở Top-1 VÀ ngữ cảnh chứa đúng từ khóa đáp án.
+  - 1 điểm: Tài liệu gold nằm ở Top-2 hoặc Top-3.
+  - 0 điểm: Tài liệu gold vắng mặt trong Top-3 hoặc ngữ cảnh không đủ.
+
+--------------------------------------------------------------------------------
+Câu hỏi #1: Thời hạn tối đa để người mua gửi yêu cầu trả hàng và hoàn tiền đối với sản phẩm Shopee Mall là bao lâu?
+  + Bộ lọc metadata : None
+  + Tài liệu kỳ vọng: shopee-buyer-return-refund.md
+  + Đáp án chuẩn    : 15 ngày kể từ ngày nhận hàng thành công.
+  + Từ khóa đặc trưng: "15 ngày"
+
+  Top-3 kết quả truy xuất:
+    [1] Score: +0.3133 | shopee-shipping-damage-compensation#9 
+        3. Video quay liên tục không ngắt quãng từ lúc kiểm tra tem niêm phong kiện hàng đến khi m...
+    [2] Score: +0.2693 | shopee-prohibited-items-policy#4 
+        ## 2. Các mặt hàng kinh doanh có điều kiện Người Bán chỉ được phép đăng bán khi đã cung cấ...
+    [3] Score: +0.1968 | shopee-seller-packaging-guidelines#5 
+        - Tuyệt đối không dán băng keo che khuất mã vạch hoặc mã QR vận đơn để đảm bảo máy quét củ...
+
+  -> Kết luận: 0 ĐIỂM (Gold không xuất hiện trong Top-3)
+
+--------------------------------------------------------------------------------
+Câu hỏi #2: Người bán có bao nhiêu thời gian để phản hồi khi người mua yêu cầu trả hàng hoàn tiền?
+  + Bộ lọc metadata : {'audience': 'seller'}
+  + Tài liệu kỳ vọng: shopee-seller-dispute-resolution.md
+  + Đáp án chuẩn    : 48 giờ (2 ngày lịch) kể từ lúc hệ thống gửi thông báo.
+  + Từ khóa đặc trưng: "48 giờ"
+
+  Top-3 kết quả truy xuất:
+    [1] Score: +0.2517 | shopee-seller-dispute-resolution#5 (*) GOLD DOC 
+        - Nếu hàng hoàn về bị hư hại, tráo đổi linh kiện, hoặc không phải sản phẩm ban đầu đã giao...
+    [2] Score: +0.1745 | shopee-seller-dispute-resolution#10 (*) GOLD DOC 
+        - Trường hợp gian lận hoặc cố tình gửi hàng sai khác sẽ bị khóa quyền kinh doanh trên Sàn ...
+    [3] Score: +0.1446 | shopee-seller-packaging-guidelines#2 
+        - Màng xốp bóng khí (bubble wrap): Quấn kín xung quanh sản phẩm tối thiểu 2 đến 3 lớp xốp ...
+
+  -> Kết luận: ĐẠT 1 ĐIỂM (Gold nằm ở Top-1)
+
+--------------------------------------------------------------------------------
+Câu hỏi #3: Thời gian xử lý bảo hành tiêu chuẩn đối với sản phẩm chính hãng tại Shopee là bao nhiêu ngày?
+  + Bộ lọc metadata : None
+  + Tài liệu kỳ vọng: shopee-buyer-warranty-policy.md
+  + Đáp án chuẩn    : Từ 07 đến 14 ngày làm việc kể từ ngày trung tâm nhận được sản phẩm.
+  + Từ khóa đặc trưng: "07 đến 14 ngày làm việc"
+
+  Top-3 kết quả truy xuất:
+    [1] Score: +0.2687 | shopee-buyer-warranty-policy#3 (*) GOLD DOC 
+        - Sản phẩm gặp sự cố hư hỏng hoặc lỗi kỹ thuật được xác định là do lỗi từ nhà sản xuất....
+    [2] Score: +0.2412 | shopee-buyer-return-refund#8 
+        - Người mua bắt buộc cung cấp bằng chứng video quay rõ 6 mặt kiện hàng trước khi mở và quá...
+    [3] Score: +0.2085 | shopee-buyer-warranty-policy#2 (*) GOLD DOC 
+        - Phiếu bảo hành (nếu có) phải còn nguyên vẹn, không chắp vá, không có dấu hiệu tẩy xóa số...
+
+  -> Kết luận: ĐẠT 1 ĐIỂM (Gold nằm ở Top-1)
+
+--------------------------------------------------------------------------------
+Câu hỏi #4: Người bán Shopee phải sử dụng thùng carton mấy lớp đối với hàng hóa nặng trên 5 kg hoặc hàng dễ vỡ?
+  + Bộ lọc metadata : {'audience': 'seller'}
+  + Tài liệu kỳ vọng: shopee-seller-packaging-guidelines.md
+  + Đáp án chuẩn    : Thùng carton tối thiểu 5 lớp (và quấn 2-3 lớp xốp khí dày tối thiểu 3 cm).
+  + Từ khóa đặc trưng: "5 lớp"
+
+  Top-3 kết quả truy xuất:
+    [1] Score: +0.2113 | shopee-seller-packaging-guidelines#6 (*) GOLD DOC 
+        ## 3. Thời hạn chuẩn bị hàng và bàn giao cho bưu cục Shopee - Người Bán Shopee phải xác nh...
+    [2] Score: +0.2052 | shopee-prohibited-items-policy#3 
+        - Các loại thuốc kê đơn theo đơn của bác sĩ, vắc-xin, sinh phẩm y tế và các thiết bị y tế ...
+    [3] Score: +0.1593 | shopee-seller-packaging-guidelines#4 (*) GOLD DOC 
+        ## 2. Dán nhãn vận chuyển Shopee và tem cảnh báo - Phiếu giao nhận Shopee (Air Waybill): P...
+
+  -> Kết luận: ĐẠT 1 ĐIỂM (Gold nằm ở Top-1)
+
+--------------------------------------------------------------------------------
+Câu hỏi #5: Mức bồi thường tổn thất tối đa đối với đơn hàng vận chuyển Shopee không mua bảo hiểm hàng hóa là bao nhiêu?
+  + Bộ lọc metadata : None
+  + Tài liệu kỳ vọng: shopee-shipping-damage-compensation.md
+  + Đáp án chuẩn    : Tối đa bằng 04 lần cước phí vận chuyển hoặc tối đa 1.000.000 VNĐ đối với hàng thất lạc thông thường.
+  + Từ khóa đặc trưng: "04 lần cước phí"
+
+  Top-3 kết quả truy xuất:
+    [1] Score: +0.3053 | shopee-prohibited-items-policy#2 
+        - Các chất ma túy, tiền chất ma túy, chất kích thích, thuốc lá điếu, xì gà và các sản phẩm...
+    [2] Score: +0.2074 | shopee-seller-dispute-resolution#1 
+        ## 1. Thời hạn phản hồi yêu cầu trả hàng của Người Mua - Khi Người Mua phát sinh yêu cầu T...
+    [3] Score: +0.1945 | shopee-buyer-warranty-policy#2 
+        - Phiếu bảo hành (nếu có) phải còn nguyên vẹn, không chắp vá, không có dấu hiệu tẩy xóa số...
+
+  -> Kết luận: 0 ĐIỂM (Gold không xuất hiện trong Top-3)
+
+================================================================================
+TỔNG KẾT ĐIỂM TRUY XUẤT CỦA CHIẾN LƯỢC: 3 / 10 ĐIỂM
+================================================================================
+
+================================================================================
+PHẦN 2: THỰC NGHIỆM A/B TESTING VỚI METADATA FILTER
+Câu hỏi thử nghiệm: 'Người bán có bao nhiêu thời gian để phản hồi khi người mua yêu cầu trả hàng hoàn tiền?'
+================================================================================
+
+--- LẦN 1: CÓ DÙNG METADATA FILTER ({'audience': 'seller'}) ---
+  [1] Score: +0.2517 | doc_id: shopee-seller-dispute-resolution | audience: seller
+  [2] Score: +0.1745 | doc_id: shopee-seller-dispute-resolution | audience: seller
+  [3] Score: +0.1446 | doc_id: shopee-seller-packaging-guidelines | audience: seller
+
+--- LẦN 2: KHÔNG DÙNG METADATA FILTER (None) ---
+  [1] Score: +0.2517 | doc_id: shopee-seller-dispute-resolution | audience: seller
+  [2] Score: +0.1745 | doc_id: shopee-seller-dispute-resolution | audience: seller
+  [3] Score: +0.1446 | doc_id: shopee-seller-packaging-guidelines | audience: seller
+
+Nhận xét A/B Testing:
+- Khi KHÔNG dùng bộ lọc: Các tài liệu của Người Mua hoặc tài liệu vận chuyển chung có thể chen vào Top-3 do trùng từ khóa 'trả hàng', 'hoàn tiền'.
+- Khi CÓ dùng bộ lọc audience='seller': 100% Top-3 thuộc về tài liệu dành cho Người Bán, loại bỏ hoàn toàn nguy cơ lấy nhầm mốc 15 ngày của Người Mua!
+
+================================================================================
+PHẦN 3: PHÂN TÍCH THẤT BẠI (FAILURE CASE ANALYSIS)
+================================================================================
+1. Câu hỏi bị hỏng: Câu hỏi #1 ('Thời hạn tối đa để người mua gửi yêu cầu trả hàng Shopee Mall là bao lâu?')
+2. Nguyên nhân lỗi:
+   - Cosine Similarity trên MockEmbedder đo độ trùng mã băm ký tự thay vì ngữ nghĩa.
+   - Các từ khóa như 'thời hạn', 'hàng' xuất hiện dày đặc trong file bồi thường vận chuyển làm tài liệu này bị xếp nhầm lên Top-1.
+3. Đề xuất hướng sửa:
+   - Áp dụng metadata_filter={'audience': 'buyer'} để triệt tiêu các tài liệu không thuộc tập người mua.
+   - Thay thế MockEmbedder bằng mô hình nhúng ngữ nghĩa thật (SentenceTransformers hoặc OpenAI Embeddings).
+================================================================================
